@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" http-equiv="Content-Type" content="text/html;">
-    <title>登录</title>
+    <title>login</title>
 </head>
 <body>
     <div class="login">

@@ -15,16 +15,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyCaptchaAuthenticationProvider extends DaoAuthenticationProvider {
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new MyPasswordEncoder();
-    }
+
 
     public MyCaptchaAuthenticationProvider(MyUserDetailsService userDetailsService
-            , PasswordEncoder passwordEncoder
-    ){
+            , PasswordEncoder passwordEncoder){
         this.setUserDetailsService(userDetailsService);
-        //this.setPasswordEncoder(passwordEncoder);
+        this.setPasswordEncoder(passwordEncoder);
     }
 
     @Override
@@ -37,7 +33,6 @@ public class MyCaptchaAuthenticationProvider extends DaoAuthenticationProvider {
         if (!details.getImageCodeIsRight()){
             throw new VerificationCodeException();
         }
-
         //调用父类方法完成密码验证
         super.additionalAuthenticationChecks(userDetails,token);
         //调用自定义实现完成密码验证

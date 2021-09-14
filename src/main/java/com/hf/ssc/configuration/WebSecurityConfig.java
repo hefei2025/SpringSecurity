@@ -3,6 +3,7 @@ package com.hf.ssc.configuration;
 import com.google.code.kaptcha.Producer;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
+import com.hf.ssc.Service.MyUserDetailsService;
 import com.hf.ssc.component.MyCaptchaAuthenticationProvider;
 import com.hf.ssc.exception.MyAuthenticationFailureHandler;
 import com.hf.ssc.filter.VerificationCodeFilter;
@@ -38,6 +39,9 @@ import java.util.Properties;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    private MyUserDetailsService userDetailsService;
+
+    @Autowired
     private AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> myAuthenticationDetailsSource;
 
     @Autowired
@@ -49,6 +53,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //应用authenticationProvider
         auth.authenticationProvider(authenticationProvider);
     }
+
+    /*@Bean
+    public PasswordEncoder passwordEncoder(){
+        return new MyPasswordEncoder();
+    }*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -65,6 +74,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/auth/form").permitAll()
                 //通过AuthenticationProvider实现验证码校验，应用myAuthenticationDetailsSource
                 .authenticationDetailsSource(myAuthenticationDetailsSource)
+                .and()
+                //增加自动登录功能，默认为简单散列加密
+                //.rememberMe().userDetailsService(userDetailsService)
         ;
         //通过过滤器实现验证码校验，将过滤器添加在UsernamePasswordAuthenticationFilter之前
         //http.addFilterBefore(new VerificationCodeFilter(), UsernamePasswordAuthenticationFilter.class);
