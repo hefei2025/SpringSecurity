@@ -9,4 +9,8 @@ import org.springframework.stereotype.Component;
 public interface UserMapper {
     @Select("select * from users where username=#{username}")
     User findByUserName(@Param("username") String username);
+
+    @Select("select * from users where username=#{username} and password=#{password}")
+    User findByUserNameAndPwd(@Param("username")String username , @Param("password")String password);
+
 }
